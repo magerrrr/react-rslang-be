@@ -76,6 +76,9 @@ components:
           type: string
         password:
           type: string
+        avatar:
+          type: string
+          format: binary
     Auth:
       type: object
       properties:
