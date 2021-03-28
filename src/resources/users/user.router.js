@@ -1,5 +1,6 @@
 const { OK, NO_CONTENT } = require('http-status-codes');
 const router = require('express').Router();
+const upload = require('../../utils/upload-files');
 
 const userService = require('./user.service');
 const { id, user } = require('../../utils/validation/schemas');
@@ -8,10 +9,22 @@ const {
   userIdValidator
 } = require('../../utils/validation/validator');
 
-router.post('/', validator(user, 'body'), async (req, res) => {
-  const userEntity = await userService.save(req.body);
-  res.status(OK).send(userEntity.toResponse());
-});
+router.post(
+  '/',
+  upload.single('avatar'),
+  validator(user, 'body'),
+  async (req, res) => {
+    const { name, email, password } = req.body;
+    const avatar = req.file ? req.file.path : null;
+    const userEntity = await userService.save({
+      name,
+      email,
+      password,
+      avatar
+    });
+    res.status(OK).send(userEntity.toResponse());
+  }
+);
 
 router.get(
   '/:id',
