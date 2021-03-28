@@ -18,8 +18,7 @@ const User = new Schema(
       minlength: 8
     },
     avatar: {
-      binData: Buffer,
-      contentType: String
+      type: String
     }
   },
   { collection: 'users' }
